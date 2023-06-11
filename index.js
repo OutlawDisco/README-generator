@@ -1,7 +1,17 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
-const generateMD = ({ name, email, projectName, description, license }) =>
+const generateMD = ({
+  name,
+  email,
+  projectName,
+  description,
+  license,
+  installation,
+  tests,
+  usage,
+  contribute,
+}) =>
   `# ${projectName}
 By ${name}
 email:${email}
@@ -25,11 +35,11 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+${installation}
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+${usage}
 
 
 add a screenshot
@@ -53,7 +63,11 @@ If your project has a lot of features, list them here.
 
 ## How to Contribute
 
-If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.`;
+${contribute}
+
+## Tests
+
+${tests}`;
 
 inquirer
   .prompt([
@@ -78,8 +92,35 @@ inquirer
       name: "description",
     },
     {
+      type: "list",
+      message: "What kind of license should your project have?",
+      name: "license",
+      choices: ["MIT", "Apache 2.0", "other"],
+    },
+    {
       type: "input",
-      chioces: "MIT",
+      message: "What command should be run to install dependencies?",
+      default: "npm i",
+      name: "installation",
+    },
+    {
+      type: "input",
+      message: "What command should be run to run tests?",
+      default: "npm test",
+      name: "tests",
+    },
+    {
+      type: "input",
+      message: "What does the user need to know about using the repo?",
+      default: "nothing",
+      name: "usage",
+    },
+    {
+      type: "input",
+      message:
+        "What does the user need to know about contributing to the repo?",
+      default: "please dont",
+      name: "contribute",
     },
   ])
   .then((answers) => {
